@@ -41,3 +41,44 @@ def codigo_valido(codigo):
         and codigo[5:].isdigit()
     )
 
+def registrar_producto(productos):
+    codigo = input("Codigo (ejemplo PROD-001): ").strip().upper()
+    if not codigo_valido(codigo):
+        print("El codigo debe tener el formato PROD-001.")
+        return
+    if codigo in productos:
+        print("Ya existe un producto con ese codigo.")
+        return
+
+    nombre = input("Nombre del producto: ").strip()
+    if not nombre:
+        print("El nombre no puede estar vacio.")
+        return
+
+    try:
+        precio = float(input("Precio unitario: "))
+        cantidad = int(input("Cantidad disponible: "))
+        if precio <= 0 or cantidad < 0:
+            raise ValueError
+    except ValueError:
+        print("El precio debe ser mayor que cero y la cantidad un entero no negativo.")
+        return
+
+    productos[codigo] = {
+        "nombre": nombre,
+        "precio": precio,
+        "cantidad": cantidad
+    }
+    guardar_datos(productos)
+    print("Producto registrado correctamente.")
+
+
+def consultar_productos(productos):
+    if not productos:
+        print("No hay productos registrados.")
+        return
+
+    for codigo, producto in productos.items():
+        print(f"{codigo} | {producto['nombre']} | ${producto['precio']:.2f} | "
+              f"Cantidad: {producto['cantidad']}")
+
