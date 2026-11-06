@@ -82,3 +82,54 @@ def consultar_productos(productos):
         print(f"{codigo} | {producto['nombre']} | ${producto['precio']:.2f} | "
               f"Cantidad: {producto['cantidad']}")
 
+
+def actualizar_cantidad(productos):
+    codigo = input("Codigo del producto: ").strip().upper()
+    if codigo not in productos:
+        print("El producto no esta registrado.")
+        return
+
+    try:
+        cantidad = int(input("Nueva cantidad disponible: "))
+        if cantidad < 0:
+            raise ValueError
+    except ValueError:
+        print("La cantidad debe ser un entero mayor o igual que cero.")
+        return
+
+    productos[codigo]["cantidad"] = cantidad
+    guardar_datos(productos)
+    print("Cantidad actualizada correctamente.")
+
+
+def mostrar_menu():
+    print("\n--- INVENTARIO ---")
+    print("1. Registrar producto")
+    print("2. Consultar productos")
+    print("3. Actualizar cantidad")
+    print("4. Salir")
+
+
+def main():
+    productos = cargar_datos()
+
+    while True:
+        mostrar_menu()
+        opcion = input("Seleccione una opcion: ").strip()
+
+        if opcion == "1":
+            registrar_producto(productos)
+        elif opcion == "2":
+            consultar_productos(productos)
+        elif opcion == "3":
+            actualizar_cantidad(productos)
+        elif opcion == "4":
+            print("Programa finalizado.")
+            break
+        else:
+            print("Opcion no valida.")
+
+
+if __name__ == "__main__":
+    main()
+
